@@ -1,3 +1,6 @@
+## Sensible Customer data
+*.vcf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,0 +1,3 @@
+[submodule "latex-rechnung"]
+	path = latex-rechnung
+	url = https://github.com/niklashermes/latex-rechnung.git
