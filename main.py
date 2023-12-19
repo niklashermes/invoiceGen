@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
+import datetime
 import os
 import shlex
 import subprocess
@@ -167,12 +168,11 @@ Beste Grüße\nNiklas Hermes'""".format(customer.name),
 
         # generate a download link to the file
         print("Generating download-link...", end='', flush=True)
-        date_next_month = str(date.today().year) + '-' + str(date.today().month + 1) + '-' + str(
-            date.today().day).zfill(2)
+        date_next_month = datetime.date.today() + datetime.timedelta(days=30)
         resp = requests.post('https://cloud.it-hermes.de/ocs/v1.php/apps/files_sharing/api/v1/shares',
                              data={'shareType': '3',
                                    'permissions': '1',
-                                   'expireDate': '{}'.format(date_next_month),
+                                   'expireDate': '{}'.format(date_next_month.strftime("%Y-%m-%d")),
                                    'path': '/Dokumente/Gewerbe/rechnungen_{year}/rechnung_{inv}_{surn}_{n}.pdf'.format(
                                        year=year,
                                        inv=invoice_number,
