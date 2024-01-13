@@ -18,13 +18,16 @@ sudo apt install texlive-latex-full s-nail
 
 - working khard config at: `~/.config/khard/khard.conf`:
 add the path to the business addressbook:
-`[addressbooks]
+```
+[addressbooks]
 [[business]]
 path = /path/to/invoiceGen/contacts/[addressbookid]`
+```
 
 - working vdirsyncer config at: `~/.config/vdirsyncer/config`
 add the local and remote CardDAV locations:
-`[general]
+```
+[general]
 status_path = "~/.vdirsyncer/status/"
 
 [pair business_contacts]
@@ -51,14 +54,15 @@ type = "carddav"
 url = "https://example.com/remote.php/dav/addressbooks/users/[username]/[addressbookid]/"
 # The password can also be fetched from the system password storage, netrc or a
 # custom command. See http://vdirsyncer.pimutils.org/en/stable/keyring.html
-`
+```
 
 - working `.netrc` config at \~ containing:
 `machine [host-fqdn] login [username] password [password]`
 
 - working `.mailrc` config at \~ containing:
 
-```account [accountname] {
+```
+account [accountname] {
     set v15-compat
     set from="[name] [surname] <[email@example.com]>"
     set mta=smtp://email%40example.com:[password]@smtp.example.com:[smtp-port (default 587)] smtp-use-starttls
