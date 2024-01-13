@@ -8,12 +8,14 @@ from datetime import date
 ########################################################
 
 # set hourly wage
-wage = "20"
+wage = "22"
 shipping_cost = "8"
-install_fee = "30"
+install_fee = "35"
 
 path = pathlib.Path(__file__).parent.resolve()
 os.chdir(path)
+
+
 if "vulfpeck" in str(path):
     running_on = 'server'
     khard_prefix = "sudo -u www-data /var/www/.local/pipx/venvs/khard/bin/"
@@ -26,7 +28,14 @@ else:
 year = str(date.today().year)
 
 # calculate next invoice_number based on filetree
-os.chdir("../rechnungen_{year}/".format(year=year))
+folder_path = "../rechnungen_{year}/".format(year=year)
+
+# check if folder exists and of not create one
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
+
+# cd into the folder
+os.chdir(folder_path)
 
 invoice_numbers = []
 if not glob.glob(str(os.getcwd()) + '/*'):

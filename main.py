@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import argparse
+import datetime
 import os
 import shlex
 import subprocess
 import sys
 import time
-from datetime import date
 
 import requests
 
@@ -151,7 +151,7 @@ def main():
         print("Sending email...", end='', flush=True)
         os.chdir("../../rechnungen_{year}".format(year=year))
         try:
-            run_pipes(["""echo 'Sehr geehrteR {0},\nanbei, wie vereinbart, die Rechnung.\n\n
+            run_pipes(["""echo 'Sehr geehrte:r {0},\nanbei, wie vereinbart, die Rechnung.\n\n
 Beste Grüße\nNiklas Hermes'""".format(customer.name),
                        """s-nail -A it-hermes -a rechnung_{inv}_{surn}_{n}.pdf -s 'R.-Nr.: {inv} {service}' -r rechnung@it-hermes.de
 {email}""".format(inv=invoice_number,
@@ -161,18 +161,29 @@ Beste Grüße\nNiklas Hermes'""".format(customer.name),
                   email=customer.email)])
             print("done.")
         except FileNotFoundError:
-            print("error. ")
-            print("command not found: s-nail \nis the program installed?")
+            # on arch based distros s-nail command is named mailx instead
+            try:
+                run_pipes(["""echo 'Sehr geehrte:r {0},\nanbei, wie vereinbart, die Rechnung.\n\n
+Beste Grüße\nNiklas Hermes'""".format(customer.name),
+                           """mailx -A it-hermes -a rechnung_{inv}_{surn}_{n}.pdf -s 'R.-Nr.: {inv} {service}' -r rechnung@it-hermes.de
+{email}""".format(inv=invoice_number,
+                  surn=customer.surname.replace(" ", "_").lower(),
+                  n=customer.name[0].lower(),
+                  service=invoice.email_header,
+                  email=customer.email)])
+                print("done.")
+            except FileNotFoundError:
+                print("error. ")
+                print("command not found: s-nail \nis the program installed?")
     else:
 
         # generate a download link to the file
         print("Generating download-link...", end='', flush=True)
-        date_next_month = str(date.today().year) + '-' + str(date.today().month + 1) + '-' + str(
-            date.today().day).zfill(2)
+        date_next_month = datetime.date.today() + datetime.timedelta(days=30)
         resp = requests.post('https://cloud.it-hermes.de/ocs/v1.php/apps/files_sharing/api/v1/shares',
                              data={'shareType': '3',
                                    'permissions': '1',
-                                   'expireDate': '{}'.format(date_next_month),
+                                   'expireDate': '{}'.format(date_next_month.strftime("%Y-%m-%d")),
                                    'path': '/Dokumente/Gewerbe/rechnungen_{year}/rechnung_{inv}_{surn}_{n}.pdf'.format(
                                        year=year,
                                        inv=invoice_number,

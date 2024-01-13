@@ -21,6 +21,7 @@ class OS(str, Enum):
     GOS = "GrapheneOS"
     EOS = "/e/OS"
     COS = "CalyxOS"
+    IOS = "iodéOS"
     ELIXIR = "Project Elixir OS"
     PIXEL = "PixelExperience OS"
     MICROG = "LineageOS for MicroG"

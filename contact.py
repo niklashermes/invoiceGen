@@ -73,6 +73,8 @@ Address :
         print(".", end='', flush=True)
 
         main.run_pipes([f"{khard_prefix}khard new -a business -i contact.yaml"])
+        # synchronize contacts with CardDAV server
+        main.run("vdirsyncer sync")
         # make sure the file exists on the server
         if running_on == "desktop":
             print("Waiting 5 seconds for the file to be uploaded.", end='', flush=True)
@@ -83,7 +85,6 @@ Address :
         else:
             main.run("sudo -u www-data php /var/www/nextcloud/occ files:scan --path "
                      "/niklas/files/Dokumente/Gewerbe/invoiceGen/contacts")
-            main.run("sudo -u www-data /var/www/.local/pipx/venvs/vdirsyncer/bin/vdirsyncer sync")
             time.sleep(0.5)
             print("done.")
     else:
