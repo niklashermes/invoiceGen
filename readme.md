@@ -22,10 +22,12 @@ add the path to the business addressbook:
 [addressbooks]
 [[business]]
 path = /path/to/invoiceGen/contacts/[addressbookid]`
+```
 
 - working vdirsyncer config at: `~/.config/vdirsyncer/config`
 add the local and remote CardDAV locations:
-`[general]
+```
+[general]
 status_path = "~/.vdirsyncer/status/"
 
 [pair business_contacts]
